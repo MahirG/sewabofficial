@@ -1,7 +1,6 @@
 import "./globals.css";
 
 export const metadata = {
-  metadataBase: new URL("https://sewabofficial.com"),
   title: "Sewab Travel Designers — Trusted Umrah Package Organizer in Ethiopia",
   description:
     "Sewab Travel Designers is Ethiopia's trusted Umrah package organizer. Premium, fully managed Umrah and Hajj journeys with visa, flights, hotels near the Haram, and expert guidance from Addis Ababa to the Holy Cities.",
