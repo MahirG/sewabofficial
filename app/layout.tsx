@@ -10,24 +10,43 @@ import "./mobile-menu-refinements.css";
 import "./mobile-menu-contact.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://sewabgroups.com"),
+  metadataBase: new URL("https://www.sewabgroups.com"),
+  applicationName: "SEWAB Travel Designers",
   title: {
     default: "SEWAB Travel Designers | Umrah, Hajj & World Tours",
     template: "%s | SEWAB Travel Designers",
   },
   description:
-    "Carefully managed Umrah, Hajj, UAE, and international travel experiences from Addis Ababa, Ethiopia.",
+    "Carefully managed Umrah, Hajj, UAE, and international travel experiences from Addis Ababa, Ethiopia, with Amharic-speaking support.",
   keywords: [
-    "Umrah Ethiopia",
-    "Hajj Ethiopia",
+    "Umrah packages from Ethiopia",
+    "Umrah from Addis Ababa",
+    "Hajj packages Ethiopia",
+    "Umrah visa Ethiopia",
     "travel agency Addis Ababa",
+    "Amharic Umrah guide",
     "Dubai tour Ethiopia",
+    "corporate travel Ethiopia",
     "SEWAB Travel Designers",
   ],
+  authors: [{ name: "SEWAB Travel Designers", url: "https://www.sewabgroups.com" }],
+  creator: "SEWAB Travel Designers",
+  publisher: "SEWAB Travel Designers",
+  category: "Travel",
+  referrer: "origin-when-cross-origin",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: "SEWAB Travel Designers",
     description:
-      "Purposeful spiritual and leisure journeys designed from Ethiopia to the world.",
+      "Purposeful Umrah, Hajj, UAE and international journeys designed from Ethiopia to the world.",
+    url: "/",
     type: "website",
     locale: "en_ET",
     siteName: "SEWAB Travel Designers",
@@ -36,16 +55,24 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "SEWAB Travel Designers",
     description:
-      "Purposeful spiritual and leisure journeys designed from Ethiopia to the world.",
+      "Purposeful Umrah, Hajj, UAE and international journeys designed from Ethiopia to the world.",
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
   icons: {
     icon: "/sewab-logo-original.svg",
     apple: "/sewab-logo-original.svg",
   },
+  manifest: "/manifest.webmanifest",
 };
 
 export const viewport: Viewport = {
@@ -53,6 +80,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   themeColor: "#0f6b4a",
+  colorScheme: "light",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
