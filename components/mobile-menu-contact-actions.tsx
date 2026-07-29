@@ -5,6 +5,8 @@ import { createPortal } from "react-dom";
 import { Icon } from "@/components/icons";
 import { contact, type Language } from "@/lib/site-data";
 
+const CONTACT_ACTIONS_MARKER = "sewabContactActionsMounted";
+
 export function MobileMenuContactActions() {
   const [target, setTarget] = useState<HTMLElement | null>(null);
   const [language, setLanguage] = useState<Language>("en");
@@ -15,6 +17,17 @@ export function MobileMenuContactActions() {
     );
     const site = document.querySelector<HTMLElement>(".site");
 
+    if (!navigation) return;
+
+    // Only one Call/WhatsApp group may exist inside the mobile menu.
+    if (
+      navigation.dataset[CONTACT_ACTIONS_MARKER] === "true" ||
+      navigation.querySelector(".mobile-menu-contact")
+    ) {
+      return;
+    }
+
+    navigation.dataset[CONTACT_ACTIONS_MARKER] = "true";
     setTarget(navigation);
 
     const updateLanguage = () => {
@@ -29,7 +42,10 @@ export function MobileMenuContactActions() {
       attributeFilter: ["lang"],
     });
 
-    return () => observer?.disconnect();
+    return () => {
+      observer?.disconnect();
+      delete navigation.dataset[CONTACT_ACTIONS_MARKER];
+    };
   }, []);
 
   if (!target) return null;
@@ -44,7 +60,11 @@ export function MobileMenuContactActions() {
   const whatsappLabel = language === "am" ? "ዋትስአፕ" : "WhatsApp";
 
   return createPortal(
-    <div className="mobile-menu-contact" aria-label="Contact SEWAB">
+    <div
+      id="mobile-menu-contact-actions"
+      className="mobile-menu-contact"
+      aria-label="Contact SEWAB"
+    >
       <a
         className="mobile-menu-call"
         href={`tel:${contact.primaryPhone}`}
