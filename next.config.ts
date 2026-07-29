@@ -8,7 +8,7 @@ const contentSecurityPolicy = [
   "object-src 'none'",
   "script-src 'self' 'unsafe-inline'",
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://images.unsplash.com https://cdn.kibrispdr.org",
+  "img-src 'self' data: blob: https://images.unsplash.com",
   "font-src 'self' data:",
   "connect-src 'self'",
   "media-src 'self'",
@@ -57,10 +57,31 @@ const securityHeaders = [
   },
 ];
 
+const immutableAssetHeaders = [
+  {
+    key: "Cache-Control",
+    value: "public, max-age=31536000, immutable",
+  },
+];
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   compress: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        pathname: "/**",
+      },
+    ],
+    formats: ["image/avif", "image/webp"],
+    qualities: [75, 80, 85, 88, 90],
+    deviceSizes: [360, 430, 640, 750, 828, 1080, 1200, 1440, 1920],
+    imageSizes: [64, 96, 128, 256, 320],
+    minimumCacheTTL: 2678400,
+  },
   async headers() {
     return [
       {
@@ -68,13 +89,12 @@ const nextConfig: NextConfig = {
         headers: securityHeaders,
       },
       {
-        source: "/:all*(svg|jpg|jpeg|png|webp|avif)",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
-          },
-        ],
+        source: "/sewab-logo-original.svg",
+        headers: immutableAssetHeaders,
+      },
+      {
+        source: "/sewab-mark.svg",
+        headers: immutableAssetHeaders,
       },
     ];
   },

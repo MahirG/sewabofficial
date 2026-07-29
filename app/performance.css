@@ -1,7 +1,7 @@
-/* Performance and typography layer */
+/* Performance and typography layer — loaded after the core design system. */
 :root {
-  --apple-text: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, "Noto Sans Ethiopic", sans-serif;
-  --apple-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, "Noto Sans Ethiopic", sans-serif;
+  --apple-text: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", "Noto Sans Ethiopic", Arial, sans-serif;
+  --apple-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", "Noto Sans Ethiopic", Arial, sans-serif;
 }
 
 html {
@@ -15,14 +15,14 @@ input,
 select,
 textarea {
   font-family: var(--apple-text) !important;
+  font-kerning: normal;
+  font-synthesis: none;
 }
 
 body {
-  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
-  font-kerning: normal;
+  font-size: 16px;
+  line-height: 1.62;
   letter-spacing: -0.008em;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 .hero h1,
@@ -38,104 +38,221 @@ body {
 .steps h3,
 .quote blockquote,
 .form-title b,
-.brand strong {
+.brand strong,
+.stats strong {
   font-family: var(--apple-display) !important;
-  font-style: normal !important;
-  font-weight: 700 !important;
-  letter-spacing: -0.045em !important;
+  font-style: normal;
+  text-wrap: balance;
+}
+
+.hero h1,
+.heading h2,
+.center-heading h2,
+.pilgrim-copy h2,
+.stories h2,
+.faq h2,
+.contact h2,
+.trust h2 {
+  font-weight: 760 !important;
+  letter-spacing: -0.052em !important;
+  line-height: 0.98 !important;
 }
 
 .hero h1 em {
-  font-family: var(--apple-display) !important;
-  font-style: normal !important;
-  font-weight: 700 !important;
+  font-family: inherit !important;
+  font-weight: 430 !important;
+  letter-spacing: -0.045em;
+}
+
+.brand strong {
+  font-weight: 780 !important;
+  letter-spacing: 0.075em !important;
+}
+
+.services h3,
+.package h3,
+.steps h3,
+.form-title b,
+.stats strong {
+  font-weight: 720 !important;
+  letter-spacing: -0.025em !important;
+}
+
+.quote blockquote {
+  font-weight: 540 !important;
+  letter-spacing: -0.025em;
+  line-height: 1.36 !important;
 }
 
 .lead,
 .heading > p,
 .faq-grid > div > p,
-.package-body > p,
+.pilgrim-copy > p,
+.contact-grid > div:first-child > p,
 .services p,
+.package-body > p,
 .steps p,
-.contact > p,
-.pilgrim-copy > p {
-  line-height: 1.72 !important;
-}
-
-p,
-li,
-label,
-input,
-select,
-textarea,
-button,
-a {
+.faq-grid article > p,
+footer p {
   text-wrap: pretty;
 }
 
-/* Critical hero images: smaller responsive sources, preloaded in layout. */
-.photo-one {
-  background-image: url("https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&fit=crop&w=1200&q=82") !important;
+.lead {
+  max-width: 58ch;
+  line-height: 1.72 !important;
 }
 
-.photo-two {
-  background-image: url("https://cdn.kibrispdr.org/data/717/kubah-hijau-masjid-nabawi-35.jpg") !important;
-  background-position: center center !important;
+.heading > p,
+.faq-grid > div > p,
+.pilgrim-copy > p,
+.contact-grid > div:first-child > p {
+  max-width: 62ch;
+  line-height: 1.72;
 }
 
-/* Do not fetch below-the-fold background images until IntersectionObserver activates them. */
+.kicker,
+.navlinks a,
+.btn,
+.filters button,
+.package-body > p:first-child,
+.package button,
+.form-grid label > span,
+.topbar,
+.proof,
+.stats span {
+  letter-spacing: 0.01em;
+}
+
+/* Next/Image media surfaces */
+.optimized-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  color: transparent;
+  transform: translateZ(0);
+}
+
+.photo,
 .package-img,
 .pilgrim-photo,
 .insta {
   background-image: none !important;
   background-color: #e8eee9;
+  isolation: isolate;
 }
 
-.lazy-bg-loaded {
-  background-image: var(--lazy-bg) !important;
+.photo::after,
+.package-img::after,
+.insta::before {
+  z-index: 1;
 }
 
-.package-img,
-.pilgrim-photo,
-.insta,
-.photo {
-  image-rendering: auto;
+.photo > span,
+.package-img > span,
+.package-img > b,
+.insta > svg,
+.insta > span,
+.insta > b {
+  position: relative;
+  z-index: 2;
 }
 
-/* Skip rendering work for distant sections while keeping stable scroll geometry. */
-.services,
-.packages,
-.pilgrimage,
-.process,
-.stories,
-.faq,
-.contact,
-footer {
-  content-visibility: auto;
-  contain-intrinsic-size: 1px 900px;
+.photo-one .optimized-media {
+  object-position: 50% 50%;
 }
 
-.package,
-.services article,
-.quote,
-.insta,
-form {
-  contain: layout paint style;
+.photo-two .optimized-media {
+  object-position: 50% 43%;
+}
+
+.package-img {
+  overflow: hidden;
+}
+
+.package-img .optimized-media {
+  transition: transform 0.65s cubic-bezier(.22, 1, .36, 1), filter 0.35s ease;
+}
+
+.package:hover .package-img .optimized-media {
+  transform: scale(1.045) translateZ(0);
+}
+
+.pilgrim-photo {
+  position: relative;
+  overflow: hidden;
+}
+
+.pilgrim-photo .optimized-media {
+  object-position: center;
+}
+
+.insta {
+  position: relative;
+  overflow: hidden;
+}
+
+.insta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(4, 44, 37, .12), rgba(4, 44, 37, .9));
+}
+
+.insta .optimized-media {
+  object-position: center;
+  transition: transform .65s cubic-bezier(.22, 1, .36, 1);
+}
+
+.insta:hover .optimized-media {
+  transform: scale(1.045) translateZ(0);
+}
+
+/* Skip expensive rendering until below-fold sections approach the viewport. */
+@supports (content-visibility: auto) {
+  .trust,
+  #services,
+  #packages,
+  .pilgrimage,
+  .stats,
+  #process,
+  #stories,
+  .faq,
+  #contact,
+  footer {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 900px;
+  }
 }
 
 @media (max-width: 720px) {
   body {
-    font-size: 16px;
-    line-height: 1.62;
+    font-size: 15.5px;
+    line-height: 1.64;
   }
 
-  .hero h1 {
-    letter-spacing: -0.055em !important;
-    line-height: 0.98 !important;
+  .hero h1,
+  .heading h2,
+  .center-heading h2,
+  .pilgrim-copy h2,
+  .stories h2,
+  .faq h2,
+  .contact h2,
+  .trust h2 {
+    letter-spacing: -0.046em !important;
+    line-height: 1.01 !important;
   }
 
   .lead {
-    font-size: 1rem !important;
     line-height: 1.68 !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .package-img .optimized-media,
+  .insta .optimized-media {
+    transition: none;
   }
 }
