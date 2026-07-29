@@ -36,13 +36,39 @@ export function PremiumEnhancements() {
     });
     document.body.classList.add("premium-ready");
 
-    const updateHeroLabel = () => {
-      const label = document.querySelector<HTMLElement>(".photo-two b");
-      if (!label) return;
-      label.textContent = site?.getAttribute("lang") === "am" ? "መዲና" : "Madinah";
+    const updateLocalizedUi = () => {
+      const isAmharic = site?.getAttribute("lang") === "am";
+      const journeyLabel = isAmharic ? "ጉዞዎን ይጀምሩ" : "Start your journey";
+      const medinaLabel = document.querySelector<HTMLElement>(".photo-two b");
+      const heroJourneyButton = document.querySelector<HTMLAnchorElement>(
+        ".hero .actions .btn-ghost",
+      );
+      const mobileJourneyButton = document.querySelector<HTMLAnchorElement>(
+        ".premium-mobile-actions a:last-child",
+      );
+
+      if (medinaLabel) {
+        medinaLabel.textContent = isAmharic ? "መዲና" : "Madinah";
+      }
+
+      if (heroJourneyButton) {
+        heroJourneyButton.setAttribute("href", "#contact");
+        heroJourneyButton.removeAttribute("target");
+        heroJourneyButton.removeAttribute("rel");
+        heroJourneyButton.setAttribute("aria-label", journeyLabel);
+        heroJourneyButton.setAttribute("title", journeyLabel);
+      }
+
+      if (mobileJourneyButton) {
+        mobileJourneyButton.setAttribute("aria-label", journeyLabel);
+        mobileJourneyButton.setAttribute("title", journeyLabel);
+        const label = mobileJourneyButton.querySelector("span");
+        if (label) label.textContent = journeyLabel;
+      }
     };
-    updateHeroLabel();
-    const languageObserver = site ? new MutationObserver(updateHeroLabel) : null;
+
+    updateLocalizedUi();
+    const languageObserver = site ? new MutationObserver(updateLocalizedUi) : null;
     if (site) {
       languageObserver?.observe(site, {
         attributes: true,
@@ -209,11 +235,11 @@ export function PremiumEnhancements() {
         </a>
         <a
           href="#contact"
-          aria-label="Plan a trip"
-          title="Plan a trip"
+          aria-label="Start your journey"
+          title="Start your journey"
         >
           <Icon name="plane" />
-          <span>Plan</span>
+          <span>Start your journey</span>
         </a>
       </div>
     </>
