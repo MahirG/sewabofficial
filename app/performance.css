@@ -73,6 +73,22 @@ a {
   text-wrap: pretty;
 }
 
+/* Replace the former WhatsApp-planning label from first paint on every viewport. */
+.hero .actions .btn-ghost {
+  font-size: 0 !important;
+}
+
+.hero .actions .btn-ghost::after {
+  content: "Start your journey";
+  font-size: 0.88rem;
+  font-weight: 820;
+  letter-spacing: -0.01em;
+}
+
+.site[lang="am"] .hero .actions .btn-ghost::after {
+  content: "ጉዞዎን ይጀምሩ";
+}
+
 /* Icon-only hamburger: no visible MENU/CLOSE label. */
 .hamb {
   width: 44px !important;
@@ -186,6 +202,10 @@ form {
   .lead {
     font-size: 1rem !important;
     line-height: 1.68 !important;
+  }
+
+  .hero .actions .btn-ghost::after {
+    font-size: 0.88rem;
   }
 
   /* Tiny left-side mobile action rail instead of a full-width sticky footer. */
