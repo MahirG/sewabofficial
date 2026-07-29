@@ -1,78 +1,104 @@
-/* Final mobile header controls: right aligned, compact, and conflict-free. */
+/* Standard mobile header: logo left, controls right, menu directly below header. */
 @media (max-width: 980px) {
-  .navrow {
+  .header {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1100 !important;
+    overflow: visible !important;
+  }
+
+  .header .navrow {
     position: relative !important;
-    width: 100% !important;
-    padding-right: max(0px, env(safe-area-inset-right)) !important;
+    width: min(100% - 32px, 1200px) !important;
+    height: 70px !important;
+    margin-inline: auto !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 16px !important;
+  }
+
+  .header .brand {
+    min-width: 0 !important;
+    max-width: calc(100% - 112px) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 9px !important;
+    overflow: hidden !important;
+  }
+
+  .header .brand img {
+    width: auto !important;
+    height: 46px !important;
+    flex: 0 0 auto !important;
+  }
+
+  .header .brand > span {
+    min-width: 0 !important;
+  }
+
+  .header .brand strong,
+  .header .brand small {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
   }
 
   .nav-actions {
-    position: relative !important;
-    z-index: 1010 !important;
+    position: static !important;
+    z-index: auto !important;
     margin-left: auto !important;
     display: flex !important;
     align-items: center !important;
     justify-content: flex-end !important;
     gap: 8px !important;
     flex: 0 0 auto !important;
-    pointer-events: auto !important;
   }
 
   .lang {
-    width: auto !important;
-    min-width: 52px !important;
-    height: 36px !important;
-    min-height: 36px !important;
-    padding: 0 11px !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 6px !important;
-    border: 1px solid rgba(15, 107, 74, 0.16) !important;
-    border-radius: 999px !important;
-    background: rgba(255, 255, 255, 0.72) !important;
+    width: 42px !important;
+    min-width: 42px !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    padding: 0 !important;
+    display: inline-grid !important;
+    place-items: center !important;
+    border: 1px solid rgba(15, 107, 74, 0.14) !important;
+    border-radius: 12px !important;
+    background: #fff !important;
     color: var(--p-emerald-dark) !important;
-    box-shadow: none !important;
-    font-size: 0.72rem !important;
-    font-weight: 750 !important;
-    line-height: 1 !important;
-    letter-spacing: 0 !important;
-    white-space: nowrap !important;
+    box-shadow: 0 5px 16px rgba(5, 47, 36, 0.06) !important;
+    font-size: 0 !important;
     cursor: pointer !important;
     touch-action: manipulation !important;
-    pointer-events: auto !important;
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
   }
 
   .lang svg {
-    width: 15px !important;
-    height: 15px !important;
-    flex: 0 0 auto !important;
+    width: 18px !important;
+    height: 18px !important;
     margin: 0 !important;
   }
 
   .lang:hover,
   .lang:active {
-    background: rgba(232, 242, 237, 0.9) !important;
+    background: var(--p-mint) !important;
     transform: none !important;
   }
 
   .hamb {
-    position: relative !important;
-    right: 0 !important;
-    margin: 0 -10px 0 0 !important;
-    pointer-events: auto !important;
-    touch-action: manipulation !important;
-    isolation: isolate !important;
+    position: static !important;
+    right: auto !important;
+    top: auto !important;
+    margin: 0 !important;
+    flex: 0 0 44px !important;
+    isolation: auto !important;
   }
 
   .hamb-lines {
-    margin-left: auto !important;
-    margin-right: 10px !important;
+    margin: 0 !important;
   }
 
-  /* Let React's accessibility state be the single source of truth. */
   #mobile-navigation[aria-hidden="true"] {
     display: none !important;
     visibility: hidden !important;
@@ -81,9 +107,15 @@
   }
 
   #mobile-navigation[aria-hidden="false"] {
-    position: fixed !important;
-    inset: 72px 0 0 !important;
-    z-index: 1001 !important;
+    position: absolute !important;
+    top: 100% !important;
+    right: 0 !important;
+    bottom: auto !important;
+    left: 0 !important;
+    inset: auto 0 auto 0 !important;
+    z-index: 1090 !important;
+    width: 100% !important;
+    max-height: calc(100dvh - 70px) !important;
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
@@ -91,32 +123,123 @@
     overflow-y: auto !important;
     overscroll-behavior: contain !important;
     -webkit-overflow-scrolling: touch !important;
+    border-top: 1px solid rgba(15, 107, 74, 0.1) !important;
+    border-bottom: 1px solid rgba(15, 107, 74, 0.14) !important;
+    background: rgba(255, 253, 248, 0.99) !important;
+    box-shadow: 0 24px 60px rgba(3, 39, 29, 0.16) !important;
+    backdrop-filter: blur(20px) saturate(145%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(145%) !important;
   }
 
-  #mobile-navigation[aria-hidden="false"] nav,
-  #mobile-navigation[aria-hidden="false"] a {
-    pointer-events: auto !important;
+  #mobile-navigation nav {
+    width: min(100% - 32px, 560px) !important;
+    margin-inline: auto !important;
+    padding: 14px 0 22px !important;
+    display: grid !important;
+  }
+
+  #mobile-navigation nav a {
+    min-height: 58px !important;
+    padding: 0 4px !important;
+    display: grid !important;
+    grid-template-columns: 30px minmax(0, 1fr) 20px !important;
+    align-items: center !important;
+    gap: 10px !important;
+    border-bottom: 1px solid rgba(15, 107, 74, 0.1) !important;
+    color: var(--p-ink) !important;
+    font-family: var(--apple-text), -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif !important;
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.015em !important;
+    transition: color 180ms ease, padding 220ms cubic-bezier(0.22, 1, 0.36, 1), background 180ms ease !important;
+  }
+
+  #mobile-navigation nav a:last-child {
+    margin-top: 14px !important;
+    min-height: 50px !important;
+    grid-template-columns: 1fr auto !important;
+    border: 0 !important;
+    border-radius: 14px !important;
+    padding: 0 17px !important;
+    background: var(--p-emerald) !important;
+    color: #fff !important;
+    box-shadow: 0 12px 26px rgba(15, 107, 74, 0.18) !important;
+  }
+
+  #mobile-navigation nav a:last-child > span {
+    display: none !important;
+  }
+
+  #mobile-navigation nav a:hover,
+  #mobile-navigation nav a.premium-active {
+    padding-left: 10px !important;
+    color: var(--p-emerald) !important;
+    background: rgba(232, 242, 237, 0.48) !important;
+  }
+
+  #mobile-navigation nav a:last-child:hover,
+  #mobile-navigation nav a:last-child.premium-active {
+    padding-left: 17px !important;
+    background: var(--p-emerald-dark) !important;
+    color: #fff !important;
+  }
+
+  #mobile-navigation nav a > span {
+    font-size: 0.65rem !important;
+    font-weight: 800 !important;
+    color: #9a9f9c !important;
+  }
+
+  #mobile-navigation nav a > svg {
+    width: 18px !important;
+    height: 18px !important;
+    justify-self: end !important;
   }
 }
 
 @media (max-width: 440px) {
-  .nav-actions {
-    gap: 5px !important;
+  .header .navrow {
+    width: calc(100% - 24px) !important;
+    height: 66px !important;
+    gap: 10px !important;
+  }
+
+  .header .brand {
+    max-width: calc(100% - 100px) !important;
+  }
+
+  .header .brand img {
+    height: 42px !important;
+  }
+
+  .header .brand strong {
+    font-size: 0.96rem !important;
+  }
+
+  .header .brand small {
+    font-size: 0.48rem !important;
   }
 
   .lang {
-    min-width: 48px !important;
-    height: 34px !important;
-    min-height: 34px !important;
-    padding: 0 9px !important;
-    font-size: 0.68rem !important;
+    width: 40px !important;
+    min-width: 40px !important;
+    height: 40px !important;
+    min-height: 40px !important;
   }
 
   .hamb {
-    margin-right: -8px !important;
+    flex-basis: 42px !important;
+    width: 42px !important;
+    min-width: 42px !important;
+    height: 42px !important;
+    min-height: 42px !important;
   }
 
-  .hamb-lines {
-    margin-right: 8px !important;
+  #mobile-navigation[aria-hidden="false"] {
+    max-height: calc(100dvh - 66px) !important;
+  }
+
+  #mobile-navigation nav {
+    width: calc(100% - 24px) !important;
   }
 }
