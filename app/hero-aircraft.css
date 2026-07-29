@@ -15,14 +15,14 @@
   aspect-ratio: 1600 / 540;
   pointer-events: none;
   background-image:
-    url("/sewab-mark.svg"),
+    url("/sewab-logo-original.svg"),
     url("/sewab-hero-aircraft.svg");
   background-repeat: no-repeat;
   background-position:
-    35.5% 51.5%,
+    24% 30%,
     center;
   background-size:
-    5.4% auto,
+    5.8% auto,
     100% 100%;
   opacity: 0;
   transform-origin: center;
@@ -69,10 +69,10 @@
     top: 13%;
     width: 176vw;
     background-position:
-      35.5% 51.5%,
+      24% 30%,
       center;
     background-size:
-      5.7% auto,
+      6.1% auto,
       100% 100%;
     animation-duration: 25s;
   }
@@ -83,6 +83,9 @@
     --aircraft-visibility: 0.075;
     top: 18%;
     width: 215vw;
+    background-size:
+      6.4% auto,
+      100% 100%;
     animation-duration: 23s;
   }
 }
