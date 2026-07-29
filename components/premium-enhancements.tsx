@@ -189,7 +189,11 @@ export function PremiumEnhancements() {
         <Icon name="arrow" />
       </button>
       <div className="premium-mobile-actions" aria-label="Quick travel actions">
-        <a href={`tel:${contact.primaryPhone}`}>
+        <a
+          href={`tel:${contact.primaryPhone}`}
+          aria-label="Call SEWAB"
+          title="Call SEWAB"
+        >
           <Icon name="phone" />
           <span>Call</span>
         </a>
@@ -197,11 +201,17 @@ export function PremiumEnhancements() {
           href={`https://wa.me/${contact.whatsapp}`}
           target="_blank"
           rel="noreferrer"
+          aria-label="Message SEWAB on WhatsApp"
+          title="WhatsApp"
         >
           <Icon name="whatsapp" />
           <span>WhatsApp</span>
         </a>
-        <a href="#contact">
+        <a
+          href="#contact"
+          aria-label="Plan a trip"
+          title="Plan a trip"
+        >
           <Icon name="plane" />
           <span>Plan</span>
         </a>
