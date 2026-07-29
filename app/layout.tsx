@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import "./premium.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://sewabgroups.com"),
@@ -35,15 +36,16 @@ export const metadata: Metadata = {
     follow: true,
   },
   icons: {
-    icon: "/sewab-mark.svg",
-    apple: "/sewab-mark.svg",
+    icon: "/sewab-logo-original.svg",
+    apple: "/sewab-logo-original.svg",
   },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#07382f",
+  maximumScale: 5,
+  themeColor: "#0f6b4a",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
