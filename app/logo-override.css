@@ -1,0 +1,3 @@
+.brand img[src="/sewab-mark.svg"] {
+  content: url("/sewab-logo-original.svg");
+}
