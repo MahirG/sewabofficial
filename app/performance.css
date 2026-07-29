@@ -1,0 +1,129 @@
+/* Performance and typography layer */
+:root {
+  --apple-text: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, "Noto Sans Ethiopic", sans-serif;
+  --apple-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, "Noto Sans Ethiopic", sans-serif;
+}
+
+html {
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+  font-family: var(--apple-text) !important;
+}
+
+body {
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  font-kerning: normal;
+  letter-spacing: -0.008em;
+}
+
+.hero h1,
+.heading h2,
+.center-heading h2,
+.pilgrim-copy h2,
+.stories h2,
+.faq h2,
+.contact h2,
+.trust h2,
+.services h3,
+.package h3,
+.steps h3,
+.quote blockquote,
+.form-title b,
+.brand strong {
+  font-family: var(--apple-display) !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.045em !important;
+}
+
+.hero h1 em {
+  font-family: var(--apple-display) !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+}
+
+.lead,
+.heading > p,
+.faq-grid > div > p,
+.package-body > p,
+.services p,
+.steps p,
+.contact > p,
+.pilgrim-copy > p {
+  line-height: 1.72 !important;
+}
+
+p,
+li,
+label,
+input,
+select,
+textarea,
+button,
+a {
+  text-wrap: pretty;
+}
+
+/* Do not fetch below-the-fold background images until IntersectionObserver activates them. */
+.package-img,
+.pilgrim-photo,
+.insta {
+  background-image: none !important;
+  background-color: #e8eee9;
+}
+
+.lazy-bg-loaded {
+  background-image: var(--lazy-bg) !important;
+}
+
+.package-img,
+.pilgrim-photo,
+.insta,
+.photo {
+  image-rendering: auto;
+}
+
+/* Skip rendering work for distant sections while keeping stable scroll geometry. */
+.services,
+.packages,
+.pilgrimage,
+.process,
+.stories,
+.faq,
+.contact,
+footer {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 900px;
+}
+
+.package,
+.services article,
+.quote,
+.insta,
+form {
+  contain: layout paint style;
+}
+
+@media (max-width: 720px) {
+  body {
+    font-size: 16px;
+    line-height: 1.62;
+  }
+
+  .hero h1 {
+    letter-spacing: -0.055em !important;
+    line-height: 0.98 !important;
+  }
+
+  .lead {
+    font-size: 1rem !important;
+    line-height: 1.68 !important;
+  }
+}
