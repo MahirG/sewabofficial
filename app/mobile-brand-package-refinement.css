@@ -1,0 +1,67 @@
+/* Mobile header brand spacing and Comfort Umrah Medina image refinement. */
+
+/* Replace the unrelated Comfort Umrah image with the approved Masjid an-Nabawi photo. */
+.package-img[style*="photo-1542816417-0983c9c9ad53"] {
+  background-image: url("https://cdn.kibrispdr.org/data/717/kubah-hijau-masjid-nabawi-35.jpg") !important;
+  background-size: cover !important;
+  background-position: center 46% !important;
+  background-repeat: no-repeat !important;
+}
+
+/* Bring the official logo, name, and tagline into a tighter lockup. */
+.header .brand {
+  gap: 7px !important;
+}
+
+.header .brand > span {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  gap: 2px !important;
+  line-height: 1 !important;
+}
+
+.header .brand strong {
+  line-height: 0.95 !important;
+  letter-spacing: 0.105em !important;
+}
+
+.header .brand small {
+  margin-top: 0 !important;
+  line-height: 1 !important;
+  letter-spacing: 0.155em !important;
+}
+
+@media (max-width: 980px) {
+  .header .brand {
+    gap: 6px !important;
+  }
+
+  .header .brand > span {
+    gap: 1px !important;
+    transform: translateY(1px);
+  }
+
+  .package-img[style*="photo-1542816417-0983c9c9ad53"] {
+    background-position: center 43% !important;
+  }
+}
+
+@media (max-width: 440px) {
+  .header .brand {
+    gap: 5px !important;
+  }
+
+  .header .brand strong {
+    letter-spacing: 0.085em !important;
+  }
+
+  .header .brand small {
+    font-size: 0.46rem !important;
+    letter-spacing: 0.13em !important;
+  }
+
+  .package-img[style*="photo-1542816417-0983c9c9ad53"] {
+    background-position: 52% 42% !important;
+  }
+}
