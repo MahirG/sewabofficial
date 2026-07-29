@@ -1,10 +1,6 @@
-/* Contact controls now live inside the hamburger menu. */
+/* Keep the hamburger-menu contacts unique without hiding the left quick-action rail. */
 @media (max-width: 980px) {
-  .premium-mobile-actions {
-    display: none !important;
-  }
-
-  /* Defensive safeguard: keep exactly one Call/WhatsApp pair. */
+  /* Defensive safeguard: keep exactly one Call/WhatsApp pair inside the menu. */
   #mobile-navigation nav > .mobile-menu-contact ~ .mobile-menu-contact {
     display: none !important;
   }
