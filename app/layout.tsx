@@ -8,6 +8,7 @@ import "./header-controls.css";
 import "./hero-menu-tuning.css";
 import "./mobile-menu-refinements.css";
 import "./mobile-menu-contact.css";
+import "./contact-form-tight.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.sewabgroups.com"),
