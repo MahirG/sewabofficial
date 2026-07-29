@@ -82,11 +82,12 @@ export function PremiumEnhancements() {
       const journeyLabel = isAmharic ? "ጉዞዎን ይጀምሩ" : "Start your journey";
       const callLabel = isAmharic ? "ይደውሉ" : "Call us";
       const whatsappLabel = isAmharic ? "ዋትስአፕ" : "WhatsApp";
+      const telegramLabel = isAmharic ? "ቴሌግራም" : "Telegram";
       const medinaLabel = document.querySelector<HTMLElement>(".photo-two b");
       const heroJourneyButton = document.querySelector<HTMLAnchorElement>(
         ".hero .actions .btn-ghost",
       );
-      const mobileJourneyButton = document.querySelector<HTMLAnchorElement>(
+      const mobileTelegramButton = document.querySelector<HTMLAnchorElement>(
         ".premium-mobile-actions a:last-child",
       );
       const mobileCallButton = mobileMenuContact?.querySelector<HTMLAnchorElement>(
@@ -109,11 +110,11 @@ export function PremiumEnhancements() {
         heroJourneyButton.setAttribute("title", journeyLabel);
       }
 
-      if (mobileJourneyButton) {
-        mobileJourneyButton.setAttribute("aria-label", journeyLabel);
-        mobileJourneyButton.setAttribute("title", journeyLabel);
-        const label = mobileJourneyButton.querySelector("span");
-        if (label) label.textContent = journeyLabel;
+      if (mobileTelegramButton) {
+        mobileTelegramButton.setAttribute("aria-label", telegramLabel);
+        mobileTelegramButton.setAttribute("title", telegramLabel);
+        const label = mobileTelegramButton.querySelector("span");
+        if (label) label.textContent = telegramLabel;
       }
 
       if (mobileCallButton) {
@@ -310,12 +311,14 @@ export function PremiumEnhancements() {
           <span>WhatsApp</span>
         </a>
         <a
-          href="#contact"
-          aria-label="Start your journey"
-          title="Start your journey"
+          href={contact.social.telegram}
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Telegram"
+          title="Telegram"
         >
-          <Icon name="plane" />
-          <span>Start your journey</span>
+          <Icon name="telegram" />
+          <span>Telegram</span>
         </a>
       </div>
     </>
