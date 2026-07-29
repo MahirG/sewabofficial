@@ -23,6 +23,8 @@ export function PremiumEnhancements() {
   useEffect(() => {
     const header = document.querySelector<HTMLElement>(".header");
     const mobileMenu = document.querySelector<HTMLElement>(".mobile");
+    const mobileNav = document.querySelector<HTMLElement>("#mobile-navigation nav");
+    const hamburgerButton = document.querySelector<HTMLButtonElement>(".hamb");
     const site = document.querySelector<HTMLElement>(".site");
     const logoImages = document.querySelectorAll<HTMLImageElement>(
       'img[src="/sewab-mark.svg"]',
@@ -36,9 +38,50 @@ export function PremiumEnhancements() {
     });
     document.body.classList.add("premium-ready");
 
+    const closeMobileMenu = () => {
+      if (mobileMenu?.classList.contains("open")) hamburgerButton?.click();
+    };
+
+    let mobileMenuContact = mobileNav?.querySelector<HTMLElement>(
+      ".mobile-menu-contact",
+    ) ?? null;
+    let createdMobileMenuContact = false;
+
+    if (mobileNav && !mobileMenuContact) {
+      mobileMenuContact = document.createElement("div");
+      mobileMenuContact.className = "mobile-menu-contact";
+      mobileMenuContact.setAttribute("aria-label", "Contact SEWAB");
+      mobileMenuContact.innerHTML = `
+        <a class="mobile-menu-call" href="tel:${contact.primaryPhone}" aria-label="Call SEWAB">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M7 3H4a1 1 0 0 0-1 1c0 9.4 7.6 17 17 17a1 1 0 0 0 1-1v-3l-4-2-2 2c-3.5-1.5-6.5-4.5-8-8l2-2-2-4Z"></path>
+          </svg>
+          <span data-menu-call-label>Call us</span>
+        </a>
+        <a class="mobile-menu-whatsapp" href="https://wa.me/${contact.whatsapp}" target="_blank" rel="noreferrer" aria-label="Message SEWAB on WhatsApp">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 11.5a8 8 0 0 1-11.7 7.1L4 20l1.4-4.1A8 8 0 1 1 20 11.5Z"></path>
+            <path d="M8.5 8.2c.4 3.8 3.5 6.9 7.3 7.3l1.1-1.5-2.4-1.1-.8 1c-1.7-.7-2.9-1.9-3.6-3.6l1-.8L10 7.1 8.5 8.2Z"></path>
+          </svg>
+          <span data-menu-whatsapp-label>WhatsApp</span>
+        </a>
+      `;
+      mobileNav.appendChild(mobileMenuContact);
+      createdMobileMenuContact = true;
+    }
+
+    const mobileContactLinks = Array.from(
+      mobileMenuContact?.querySelectorAll<HTMLAnchorElement>("a") ?? [],
+    );
+    mobileContactLinks.forEach((link) =>
+      link.addEventListener("click", closeMobileMenu),
+    );
+
     const updateLocalizedUi = () => {
       const isAmharic = site?.getAttribute("lang") === "am";
       const journeyLabel = isAmharic ? "ጉዞዎን ይጀምሩ" : "Start your journey";
+      const callLabel = isAmharic ? "ይደውሉ" : "Call us";
+      const whatsappLabel = isAmharic ? "ዋትስአፕ" : "WhatsApp";
       const medinaLabel = document.querySelector<HTMLElement>(".photo-two b");
       const heroJourneyButton = document.querySelector<HTMLAnchorElement>(
         ".hero .actions .btn-ghost",
@@ -46,6 +89,13 @@ export function PremiumEnhancements() {
       const mobileJourneyButton = document.querySelector<HTMLAnchorElement>(
         ".premium-mobile-actions a:last-child",
       );
+      const mobileCallButton = mobileMenuContact?.querySelector<HTMLAnchorElement>(
+        ".mobile-menu-call",
+      );
+      const mobileWhatsAppButton =
+        mobileMenuContact?.querySelector<HTMLAnchorElement>(
+          ".mobile-menu-whatsapp",
+        );
 
       if (medinaLabel) {
         medinaLabel.textContent = isAmharic ? "መዲና" : "Madinah";
@@ -64,6 +114,28 @@ export function PremiumEnhancements() {
         mobileJourneyButton.setAttribute("title", journeyLabel);
         const label = mobileJourneyButton.querySelector("span");
         if (label) label.textContent = journeyLabel;
+      }
+
+      if (mobileCallButton) {
+        mobileCallButton.setAttribute(
+          "aria-label",
+          isAmharic ? "SEWABን ይደውሉ" : "Call SEWAB",
+        );
+        const label = mobileCallButton.querySelector<HTMLElement>(
+          "[data-menu-call-label]",
+        );
+        if (label) label.textContent = callLabel;
+      }
+
+      if (mobileWhatsAppButton) {
+        mobileWhatsAppButton.setAttribute(
+          "aria-label",
+          isAmharic ? "SEWABን በዋትስአፕ ያግኙ" : "Message SEWAB on WhatsApp",
+        );
+        const label = mobileWhatsAppButton.querySelector<HTMLElement>(
+          "[data-menu-whatsapp-label]",
+        );
+        if (label) label.textContent = whatsappLabel;
       }
     };
 
@@ -192,6 +264,10 @@ export function PremiumEnhancements() {
 
     return () => {
       window.removeEventListener("scroll", updateScrollState);
+      mobileContactLinks.forEach((link) =>
+        link.removeEventListener("click", closeMobileMenu),
+      );
+      if (createdMobileMenuContact) mobileMenuContact?.remove();
       menuObserver?.disconnect();
       languageObserver?.disconnect();
       backgroundObserver?.disconnect();
