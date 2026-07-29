@@ -1,4 +1,5 @@
 import { MobileLanguageMenu } from "@/components/mobile-language-menu";
+import { MobileMenuContactActions } from "@/components/mobile-menu-contact-actions";
 import { PremiumEnhancements } from "@/components/premium-enhancements";
 import { SiteShell } from "@/components/site-shell";
 import { contact } from "@/lib/site-data";
@@ -39,6 +40,7 @@ export default function Home() {
       <SiteShell />
       <PremiumEnhancements />
       <MobileLanguageMenu />
+      <MobileMenuContactActions />
     </>
   );
 }
