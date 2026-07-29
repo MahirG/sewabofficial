@@ -5,6 +5,7 @@ import "./logo-override.css";
 import "./performance.css";
 import "./hamburger.css";
 import "./header-controls.css";
+import "./hero-menu-tuning.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://sewabgroups.com"),
