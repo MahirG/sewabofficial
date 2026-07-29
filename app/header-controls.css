@@ -1,0 +1,122 @@
+/* Final mobile header controls: right aligned, compact, and conflict-free. */
+@media (max-width: 980px) {
+  .navrow {
+    position: relative !important;
+    width: 100% !important;
+    padding-right: max(0px, env(safe-area-inset-right)) !important;
+  }
+
+  .nav-actions {
+    position: relative !important;
+    z-index: 1010 !important;
+    margin-left: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 8px !important;
+    flex: 0 0 auto !important;
+    pointer-events: auto !important;
+  }
+
+  .lang {
+    width: auto !important;
+    min-width: 52px !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    padding: 0 11px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    border: 1px solid rgba(15, 107, 74, 0.16) !important;
+    border-radius: 999px !important;
+    background: rgba(255, 255, 255, 0.72) !important;
+    color: var(--p-emerald-dark) !important;
+    box-shadow: none !important;
+    font-size: 0.72rem !important;
+    font-weight: 750 !important;
+    line-height: 1 !important;
+    letter-spacing: 0 !important;
+    white-space: nowrap !important;
+    cursor: pointer !important;
+    touch-action: manipulation !important;
+    pointer-events: auto !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+  }
+
+  .lang svg {
+    width: 15px !important;
+    height: 15px !important;
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+  }
+
+  .lang:hover,
+  .lang:active {
+    background: rgba(232, 242, 237, 0.9) !important;
+    transform: none !important;
+  }
+
+  .hamb {
+    position: relative !important;
+    right: 0 !important;
+    margin: 0 -10px 0 0 !important;
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+    isolation: isolate !important;
+  }
+
+  .hamb-lines {
+    margin-left: auto !important;
+    margin-right: 10px !important;
+  }
+
+  /* Let React's accessibility state be the single source of truth. */
+  #mobile-navigation[aria-hidden="true"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  #mobile-navigation[aria-hidden="false"] {
+    position: fixed !important;
+    inset: 72px 0 0 !important;
+    z-index: 1001 !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  #mobile-navigation[aria-hidden="false"] nav,
+  #mobile-navigation[aria-hidden="false"] a {
+    pointer-events: auto !important;
+  }
+}
+
+@media (max-width: 440px) {
+  .nav-actions {
+    gap: 5px !important;
+  }
+
+  .lang {
+    min-width: 48px !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    padding: 0 9px !important;
+    font-size: 0.68rem !important;
+  }
+
+  .hamb {
+    margin-right: -8px !important;
+  }
+
+  .hamb-lines {
+    margin-right: 8px !important;
+  }
+}
