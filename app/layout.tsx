@@ -10,6 +10,7 @@ import "./mobile-menu-refinements.css";
 import "./mobile-menu-contact.css";
 import "./contact-form-tight.css";
 import "./mobile-menu-motion.css";
+import "./hero-aircraft.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.sewabgroups.com"),
