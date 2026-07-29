@@ -123,8 +123,39 @@ form {
   contain: layout paint style;
 }
 
+/* Mobile chrome cleanup: only the real header remains visible. */
+@media (max-width: 980px) {
+  .topbar {
+    display: none !important;
+  }
+
+  .header {
+    top: 0 !important;
+  }
+
+  .header > .mobile:not(.open),
+  .mobile:not(.open) {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
+  .header > .mobile.open,
+  .mobile.open {
+    display: block !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+}
+
 @media (max-width: 720px) {
   body {
+    padding-bottom: 0 !important;
     font-size: 16px;
     line-height: 1.62;
   }
@@ -137,5 +168,88 @@ form {
   .lead {
     font-size: 1rem !important;
     line-height: 1.68 !important;
+  }
+
+  /* Tiny left-side mobile action rail instead of a full-width sticky footer. */
+  .premium-mobile-actions {
+    position: fixed !important;
+    right: auto !important;
+    left: 6px !important;
+    bottom: 72px !important;
+    z-index: 1200 !important;
+    width: 34px !important;
+    min-height: 0 !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    grid-template-rows: repeat(3, 32px) !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(255, 255, 255, 0.74) !important;
+    border-radius: 12px !important;
+    background: rgba(255, 253, 248, 0.92) !important;
+    box-shadow: 0 10px 28px rgba(2, 31, 24, 0.15) !important;
+    backdrop-filter: blur(14px) saturate(130%) !important;
+    -webkit-backdrop-filter: blur(14px) saturate(130%) !important;
+  }
+
+  .premium-mobile-actions a {
+    position: relative !important;
+    width: 32px !important;
+    min-height: 32px !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    gap: 0 !important;
+    border-right: 0 !important;
+    border-bottom: 1px solid rgba(15, 107, 74, 0.12) !important;
+    background: transparent !important;
+    color: var(--p-emerald-dark) !important;
+    font-size: 0 !important;
+  }
+
+  .premium-mobile-actions a:last-child {
+    border-bottom: 0 !important;
+    background: var(--p-emerald) !important;
+    color: #fff !important;
+  }
+
+  .premium-mobile-actions a:active {
+    transform: scale(0.92);
+  }
+
+  .premium-mobile-actions svg {
+    width: 14px !important;
+    height: 14px !important;
+    font-size: 14px !important;
+  }
+
+  .premium-mobile-actions span {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
+}
+
+@media (max-width: 440px) {
+  .premium-mobile-actions {
+    left: 4px !important;
+    bottom: 66px !important;
+    width: 32px !important;
+    grid-template-rows: repeat(3, 30px) !important;
+  }
+
+  .premium-mobile-actions a {
+    width: 30px !important;
+    min-height: 30px !important;
+  }
+
+  .premium-mobile-actions svg {
+    width: 13px !important;
+    height: 13px !important;
   }
 }
