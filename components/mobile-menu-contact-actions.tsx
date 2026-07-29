@@ -44,7 +44,7 @@ export function MobileMenuContactActions() {
   const whatsappLabel = language === "am" ? "ዋትስአፕ" : "WhatsApp";
 
   return createPortal(
-    <div className="mobile-menu-contact-actions" aria-label="Contact SEWAB">
+    <div className="mobile-menu-contact" aria-label="Contact SEWAB">
       <a
         className="mobile-menu-call"
         href={`tel:${contact.primaryPhone}`}
