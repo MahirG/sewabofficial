@@ -1,0 +1,96 @@
+/* Subtle branded aircraft flying behind the hero content. */
+.hero-grid {
+  position: relative;
+  isolation: isolate;
+}
+
+.hero-grid::before {
+  --aircraft-visibility: 0.13;
+  content: "";
+  position: absolute;
+  top: 7%;
+  left: 0;
+  z-index: 0;
+  width: clamp(1180px, 132vw, 1960px);
+  aspect-ratio: 1600 / 540;
+  pointer-events: none;
+  background-image:
+    url("/sewab-mark.svg"),
+    url("/sewab-hero-aircraft.svg");
+  background-repeat: no-repeat;
+  background-position:
+    35.5% 51.5%,
+    center;
+  background-size:
+    5.4% auto,
+    100% 100%;
+  opacity: 0;
+  transform-origin: center;
+  will-change: transform, opacity;
+  filter: saturate(0.92) brightness(1.04);
+  animation: sewab-hero-flight 28s linear infinite;
+}
+
+.hero-grid > * {
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes sewab-hero-flight {
+  0% {
+    opacity: 0;
+    transform: translate3d(-108%, 18%, 0) rotate(-5deg) scale(0.92);
+  }
+  8% {
+    opacity: calc(var(--aircraft-visibility) * 0.4);
+  }
+  22% {
+    opacity: calc(var(--aircraft-visibility) * 0.72);
+  }
+  48% {
+    opacity: var(--aircraft-visibility);
+    transform: translate3d(-12%, -3%, 0) rotate(-1.5deg) scale(1.03);
+  }
+  76% {
+    opacity: calc(var(--aircraft-visibility) * 0.68);
+  }
+  91% {
+    opacity: calc(var(--aircraft-visibility) * 0.22);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(104%, 15%, 0) rotate(2.5deg) scale(0.96);
+  }
+}
+
+@media (max-width: 980px) {
+  .hero-grid::before {
+    --aircraft-visibility: 0.1;
+    top: 13%;
+    width: 176vw;
+    background-position:
+      35.5% 51.5%,
+      center;
+    background-size:
+      5.7% auto,
+      100% 100%;
+    animation-duration: 25s;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-grid::before {
+    --aircraft-visibility: 0.075;
+    top: 18%;
+    width: 215vw;
+    animation-duration: 23s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-grid::before {
+    animation: none;
+    opacity: 0.07;
+    transform: translate3d(-24%, 5%, 0) rotate(-2.5deg) scale(1);
+  }
+}
