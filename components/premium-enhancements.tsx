@@ -4,12 +4,26 @@ import { useEffect, useState } from "react";
 import { Icon } from "@/components/icons";
 import { contact } from "@/lib/site-data";
 
+const PILGRIMAGE_IMAGE =
+  "url(https://images.unsplash.com/photo-1542816417-0983c9c9ad53?auto=format&fit=crop&w=1200&q=82)";
+const STORY_IMAGE =
+  "linear-gradient(180deg,rgba(4,44,37,.12),rgba(4,44,37,.9)),url(https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=700&q=80)";
+
+function optimizeUnsplash(value: string) {
+  return value
+    .replace(/w=1600/g, "w=900")
+    .replace(/w=1300/g, "w=900")
+    .replace(/q=88/g, "q=82")
+    .replace(/q=85/g, "q=82");
+}
+
 export function PremiumEnhancements() {
   const [showTop, setShowTop] = useState(false);
 
   useEffect(() => {
     const header = document.querySelector<HTMLElement>(".header");
     const mobileMenu = document.querySelector<HTMLElement>(".mobile");
+    const site = document.querySelector<HTMLElement>(".site");
     const logoImages = document.querySelectorAll<HTMLImageElement>(
       'img[src="/sewab-mark.svg"]',
     );
@@ -18,8 +32,58 @@ export function PremiumEnhancements() {
       image.src = "/sewab-logo-original.svg";
       image.removeAttribute("width");
       image.removeAttribute("height");
+      image.decoding = "async";
     });
     document.body.classList.add("premium-ready");
+
+    const updateHeroLabel = () => {
+      const label = document.querySelector<HTMLElement>(".photo-two b");
+      if (!label) return;
+      label.textContent = site?.getAttribute("lang") === "am" ? "መዲና" : "Madinah";
+    };
+    updateHeroLabel();
+    const languageObserver = site ? new MutationObserver(updateHeroLabel) : null;
+    if (site) {
+      languageObserver?.observe(site, {
+        attributes: true,
+        attributeFilter: ["lang"],
+      });
+    }
+
+    const lazyBackgrounds = Array.from(
+      document.querySelectorAll<HTMLElement>(".package-img, .pilgrim-photo, .insta"),
+    );
+
+    lazyBackgrounds.forEach((element) => {
+      let background = element.style.backgroundImage;
+      if (element.classList.contains("pilgrim-photo")) background = PILGRIMAGE_IMAGE;
+      if (element.classList.contains("insta")) background = STORY_IMAGE;
+      if (background) {
+        element.style.setProperty("--lazy-bg", optimizeUnsplash(background));
+      }
+    });
+
+    const loadBackground = (element: HTMLElement) => {
+      element.classList.add("lazy-bg-loaded");
+    };
+
+    const backgroundObserver = "IntersectionObserver" in window
+      ? new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              loadBackground(entry.target as HTMLElement);
+              backgroundObserver.unobserve(entry.target);
+            });
+          },
+          { rootMargin: "500px 0px", threshold: 0.01 },
+        )
+      : null;
+
+    lazyBackgrounds.forEach((element) => {
+      if (backgroundObserver) backgroundObserver.observe(element);
+      else loadBackground(element);
+    });
 
     const updateScrollState = () => {
       const scrolled = window.scrollY > 12;
@@ -103,6 +167,8 @@ export function PremiumEnhancements() {
     return () => {
       window.removeEventListener("scroll", updateScrollState);
       menuObserver?.disconnect();
+      languageObserver?.disconnect();
+      backgroundObserver?.disconnect();
       sectionObserver.disconnect();
       revealObserver.disconnect();
       document.body.classList.remove(
