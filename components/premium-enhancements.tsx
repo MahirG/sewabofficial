@@ -69,11 +69,11 @@ export function PremiumEnhancements() {
 
     const backgroundObserver = "IntersectionObserver" in window
       ? new IntersectionObserver(
-          (entries) => {
+          (entries, observer) => {
             entries.forEach((entry) => {
               if (!entry.isIntersecting) return;
               loadBackground(entry.target as HTMLElement);
-              backgroundObserver.unobserve(entry.target);
+              observer.unobserve(entry.target);
             });
           },
           { rootMargin: "500px 0px", threshold: 0.01 },
