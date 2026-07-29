@@ -71,7 +71,7 @@ export function Icon({ name, ...props }: SVGProps<SVGSVGElement> & { name: IconN
     case "location":
       return <svg {...common}><path d="M20 10c0 5.5-8 11-8 11S4 15.5 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="2.5" /></svg>;
     case "menu":
-      return <svg {...common}><path d="M4 7h16M4 12h16M4 17h16" /></svg>;
+      return <svg {...common}><path d="M4 7h16M4 12h16M4 17h10" /></svg>;
     case "phone":
       return <svg {...common}><path d="M7 3H4a1 1 0 0 0-1 1c0 9.4 7.6 17 17 17a1 1 0 0 0 1-1v-3l-4-2-2 2c-3.5-1.5-6.5-4.5-8-8l2-2-2-4Z" /></svg>;
     case "plane":
