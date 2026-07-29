@@ -7,6 +7,7 @@ import "./hamburger.css";
 import "./header-controls.css";
 import "./hero-menu-tuning.css";
 import "./mobile-menu-refinements.css";
+import "./mobile-menu-contact.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://sewabgroups.com"),
