@@ -3,4 +3,9 @@
   .premium-mobile-actions {
     display: none !important;
   }
+
+  /* Defensive safeguard: keep exactly one Call/WhatsApp pair. */
+  #mobile-navigation nav > .mobile-menu-contact ~ .mobile-menu-contact {
+    display: none !important;
+  }
 }
