@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import "./premium.css";
+import "./logo-override.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://sewabgroups.com"),
