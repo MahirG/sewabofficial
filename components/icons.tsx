@@ -1,6 +1,6 @@
 import type { SVGProps } from "react";
 
-type IconName =
+export type IconName =
   | "arrow"
   | "arrowLeft"
   | "briefcase"
@@ -27,7 +27,7 @@ type IconName =
   | "travellers"
   | "whatsapp";
 
-export function Icon({ name, ...props }: SVGProps<SVGSVGElement> & { name: IconName }) {
+export function Icon({ name, ...props }: SVGProps<SVGSVGElement> & { name: IconName | string }) {
   const common = {
     viewBox: "0 0 24 24",
     fill: "none",
