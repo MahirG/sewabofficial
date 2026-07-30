@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Icon } from "@/components/icons";
+import { siteCopy, type AppLanguage } from "@/lib/i18n";
 import { contact } from "@/lib/site-data";
 
 const PILGRIMAGE_IMAGE =
@@ -42,9 +43,8 @@ export function PremiumEnhancements() {
       if (mobileMenu?.classList.contains("open")) hamburgerButton?.click();
     };
 
-    let mobileMenuContact = mobileNav?.querySelector<HTMLElement>(
-      ".mobile-menu-contact",
-    ) ?? null;
+    let mobileMenuContact =
+      mobileNav?.querySelector<HTMLElement>(".mobile-menu-contact") ?? null;
     let createdMobileMenuContact = false;
 
     if (mobileNav && !mobileMenuContact) {
@@ -78,14 +78,17 @@ export function PremiumEnhancements() {
     );
 
     const updateLocalizedUi = () => {
-      const isAmharic = site?.getAttribute("lang") === "am";
-      const journeyLabel = isAmharic ? "ጉዞዎን ይጀምሩ" : "Start your journey";
-      const callLabel = isAmharic ? "ይደውሉ" : "Call us";
-      const whatsappLabel = isAmharic ? "ዋትስአፕ" : "WhatsApp";
-      const telegramLabel = isAmharic ? "ቴሌግራም" : "Telegram";
+      const requestedLanguage = site?.getAttribute("lang") as AppLanguage | null;
+      const language = requestedLanguage && requestedLanguage in siteCopy
+        ? requestedLanguage
+        : "en";
+      const localized = siteCopy[language];
       const medinaLabel = document.querySelector<HTMLElement>(".photo-two b");
       const heroJourneyButton = document.querySelector<HTMLAnchorElement>(
         ".hero .actions .btn-ghost",
+      );
+      const mobileActions = document.querySelector<HTMLElement>(
+        ".premium-mobile-actions",
       );
       const mobileTelegramButton = document.querySelector<HTMLAnchorElement>(
         ".premium-mobile-actions a:last-child",
@@ -97,47 +100,90 @@ export function PremiumEnhancements() {
         mobileMenuContact?.querySelector<HTMLAnchorElement>(
           ".mobile-menu-whatsapp",
         );
+      const backTopButton = document.querySelector<HTMLButtonElement>(
+        ".premium-back-top",
+      );
 
-      if (medinaLabel) {
-        medinaLabel.textContent = isAmharic ? "መዲና" : "Madinah";
-      }
+      if (medinaLabel) medinaLabel.textContent = localized.medina;
 
       if (heroJourneyButton) {
         heroJourneyButton.setAttribute("href", "#contact");
         heroJourneyButton.removeAttribute("target");
         heroJourneyButton.removeAttribute("rel");
-        heroJourneyButton.setAttribute("aria-label", journeyLabel);
-        heroJourneyButton.setAttribute("title", journeyLabel);
+        heroJourneyButton.setAttribute("aria-label", localized.startJourney);
+        heroJourneyButton.setAttribute("title", localized.startJourney);
+      }
+
+      if (mobileActions) {
+        mobileActions.setAttribute("aria-label", localized.quickTravelActions);
+        const quickLinks = mobileActions.querySelectorAll<HTMLAnchorElement>("a");
+        const labels = [
+          {
+            text: localized.callUs,
+            aria: localized.callSewab,
+            title: localized.callSewab,
+          },
+          {
+            text: localized.whatsappLabel,
+            aria: localized.messageWhatsapp,
+            title: localized.whatsappLabel,
+          },
+          {
+            text: localized.telegramLabel,
+            aria: localized.telegramLabel,
+            title: localized.telegramLabel,
+          },
+        ];
+
+        quickLinks.forEach((link, index) => {
+          const label = labels[index];
+          if (!label) return;
+          link.setAttribute("aria-label", label.aria);
+          link.setAttribute("title", label.title);
+          const text = link.querySelector("span");
+          if (text) text.textContent = label.text;
+        });
       }
 
       if (mobileTelegramButton) {
-        mobileTelegramButton.setAttribute("aria-label", telegramLabel);
-        mobileTelegramButton.setAttribute("title", telegramLabel);
-        const label = mobileTelegramButton.querySelector("span");
-        if (label) label.textContent = telegramLabel;
+        mobileTelegramButton.setAttribute("aria-label", localized.telegramLabel);
+        mobileTelegramButton.setAttribute("title", localized.telegramLabel);
+      }
+
+      if (mobileMenuContact) {
+        mobileMenuContact.setAttribute("aria-label", localized.contactSewab);
       }
 
       if (mobileCallButton) {
-        mobileCallButton.setAttribute(
-          "aria-label",
-          isAmharic ? "SEWABን ይደውሉ" : "Call SEWAB",
-        );
+        mobileCallButton.setAttribute("aria-label", localized.callSewab);
         const label = mobileCallButton.querySelector<HTMLElement>(
           "[data-menu-call-label]",
         );
-        if (label) label.textContent = callLabel;
+        if (label) label.textContent = localized.callUs;
       }
 
       if (mobileWhatsAppButton) {
-        mobileWhatsAppButton.setAttribute(
-          "aria-label",
-          isAmharic ? "SEWABን በዋትስአፕ ያግኙ" : "Message SEWAB on WhatsApp",
-        );
+        mobileWhatsAppButton.setAttribute("aria-label", localized.messageWhatsapp);
         const label = mobileWhatsAppButton.querySelector<HTMLElement>(
           "[data-menu-whatsapp-label]",
         );
-        if (label) label.textContent = whatsappLabel;
+        if (label) label.textContent = localized.whatsappLabel;
       }
+
+      if (backTopButton) {
+        backTopButton.setAttribute("aria-label", localized.backTopAria);
+        backTopButton.setAttribute("title", localized.backTopAria);
+      }
+
+      document.querySelectorAll<HTMLElement>(".services article").forEach((card) => {
+        const title = card.querySelector("h3")?.textContent?.trim();
+        const link = card.querySelector<HTMLAnchorElement>("a");
+        if (link && title) {
+          const label = `${localized.planService} ${title}`;
+          link.setAttribute("aria-label", label);
+          link.setAttribute("title", label);
+        }
+      });
     };
 
     updateLocalizedUi();
@@ -145,7 +191,7 @@ export function PremiumEnhancements() {
     if (site) {
       languageObserver?.observe(site, {
         attributes: true,
-        attributeFilter: ["lang"],
+        attributeFilter: ["lang", "dir"],
       });
     }
 
@@ -251,15 +297,6 @@ export function PremiumEnhancements() {
     );
     revealItems.forEach((item) => revealObserver.observe(item));
 
-    document.querySelectorAll<HTMLElement>(".services article").forEach((card) => {
-      const title = card.querySelector("h3")?.textContent?.trim();
-      const link = card.querySelector<HTMLAnchorElement>("a");
-      if (link && title) {
-        link.setAttribute("aria-label", `Plan ${title}`);
-        link.setAttribute("title", `Plan ${title}`);
-      }
-    });
-
     updateScrollState();
     window.addEventListener("scroll", updateScrollState, { passive: true });
 
@@ -274,10 +311,7 @@ export function PremiumEnhancements() {
       backgroundObserver?.disconnect();
       sectionObserver.disconnect();
       revealObserver.disconnect();
-      document.body.classList.remove(
-        "premium-ready",
-        "premium-menu-open",
-      );
+      document.body.classList.remove("premium-ready", "premium-menu-open");
     };
   }, []);
 
