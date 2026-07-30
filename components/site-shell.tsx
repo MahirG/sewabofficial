@@ -5,16 +5,18 @@ import {
   type FormEvent,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { Icon } from "@/components/icons";
 import {
-  contact,
-  copy,
-  packages,
-  type Language,
-  type PackageCategory,
-} from "@/lib/site-data";
+  getLanguageOption,
+  languageOptions,
+  localizePackage,
+  siteCopy,
+  type AppLanguage,
+} from "@/lib/i18n";
+import { contact, packages, type PackageCategory } from "@/lib/site-data";
 
 type Filter = "all" | PackageCategory;
 type FormState = {
@@ -33,13 +35,30 @@ const socials = [
   ["tiktok", contact.social.tiktok],
 ] as const;
 
+function detectLanguage(): AppLanguage {
+  if (typeof window === "undefined") return "en";
+
+  const saved = window.localStorage.getItem("sewab-language");
+  if (saved && languageOptions.some((option) => option.code === saved)) {
+    return saved as AppLanguage;
+  }
+
+  const browserLanguage = window.navigator.language.toLowerCase();
+  if (browserLanguage.startsWith("am")) return "am";
+  if (browserLanguage.startsWith("om")) return "om";
+  if (browserLanguage.startsWith("ar")) return "ar";
+  return "en";
+}
+
 export function SiteShell() {
-  const [language, setLanguage] = useState<Language>("en");
+  const [language, setLanguage] = useState<AppLanguage>("en");
+  const [languageOpen, setLanguageOpen] = useState(false);
   const [menu, setMenu] = useState(false);
   const [filter, setFilter] = useState<Filter>("all");
   const [story, setStory] = useState(0);
   const [faq, setFaq] = useState<number | null>(0);
   const [error, setError] = useState("");
+  const languagePickerRef = useRef<HTMLDivElement>(null);
   const [form, setForm] = useState<FormState>({
     name: "",
     phone: "",
@@ -49,27 +68,58 @@ export function SiteShell() {
     notes: "",
   });
 
-  const t = copy[language];
+  const t = siteCopy[language];
+  const isRtl = language === "ar";
+  const currentLanguage = getLanguageOption(language);
   const visible = useMemo(
     () => packages.filter((item) => filter === "all" || item.category === filter),
     [filter],
   );
 
   useEffect(() => {
+    setLanguage(detectLanguage());
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.lang = language;
+    document.documentElement.dir = isRtl ? "rtl" : "ltr";
+    window.localStorage.setItem("sewab-language", language);
+  }, [isRtl, language]);
+
+  useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setMenu(false);
+      if (event.key === "Escape") {
+        setMenu(false);
+        setLanguageOpen(false);
+      }
     };
     const closeOnDesktop = () => {
       if (window.innerWidth > 980) setMenu(false);
     };
+    const closeLanguageOutside = (event: PointerEvent) => {
+      if (
+        languagePickerRef.current &&
+        !languagePickerRef.current.contains(event.target as Node)
+      ) {
+        setLanguageOpen(false);
+      }
+    };
 
     window.addEventListener("keydown", closeOnEscape);
     window.addEventListener("resize", closeOnDesktop, { passive: true });
+    document.addEventListener("pointerdown", closeLanguageOutside);
     return () => {
       window.removeEventListener("keydown", closeOnEscape);
       window.removeEventListener("resize", closeOnDesktop);
+      document.removeEventListener("pointerdown", closeLanguageOutside);
     };
   }, []);
+
+  const changeLanguage = (nextLanguage: AppLanguage) => {
+    setLanguage(nextLanguage);
+    setLanguageOpen(false);
+    setError("");
+  };
 
   const setField = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm((current) => ({ ...current, [key]: value }));
@@ -84,34 +134,25 @@ export function SiteShell() {
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!form.name.trim() || !form.phone.trim() || !form.journey) {
-      return setError(t.form.error);
+      setError(t.form.error);
+      return;
     }
 
-    const selected =
-      packages.find((item) => item.id === form.journey)?.title[language] ??
-      form.journey;
-    const lines =
-      language === "am"
-        ? [
-            "ሰላም SEWAB Travel Designers፣",
-            `ስም: ${form.name}`,
-            `ስልክ: ${form.phone}`,
-            `ጉዞ: ${selected}`,
-            `ወር: ${form.date || "አልተገለጸም"}`,
-            `ተጓዦች: ${form.travellers}`,
-            `ማስታወሻ: ${form.notes || "የለም"}`,
-            "እባክዎ ወቅታዊ አማራጭና ዋጋ ይላኩልኝ።",
-          ]
-        : [
-            "Hello SEWAB Travel Designers,",
-            `Name: ${form.name}`,
-            `Phone: ${form.phone}`,
-            `Journey: ${selected}`,
-            `Month: ${form.date || "Not specified"}`,
-            `Travellers: ${form.travellers}`,
-            `Notes: ${form.notes || "None"}`,
-            "Please share current package options and pricing.",
-          ];
+    const chosenPackage = packages.find((item) => item.id === form.journey);
+    const selected = chosenPackage
+      ? localizePackage(chosenPackage, language).title
+      : form.journey;
+    const message = t.message;
+    const lines = [
+      message.greeting,
+      `${message.name}: ${form.name}`,
+      `${message.phone}: ${form.phone}`,
+      `${message.journey}: ${selected}`,
+      `${message.month}: ${form.date || message.notSpecified}`,
+      `${message.travellers}: ${form.travellers}`,
+      `${message.notes}: ${form.notes || message.none}`,
+      message.request,
+    ];
 
     window.open(
       `https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(lines.join("\n\n"))}`,
@@ -121,9 +162,9 @@ export function SiteShell() {
   }
 
   return (
-    <div className="site" lang={language}>
+    <div className="site" lang={language} dir={isRtl ? "rtl" : "ltr"}>
       <a className="skip" href="#main">
-        Skip to content
+        {t.skip}
       </a>
       <div className="topbar">
         <div className="container topbar-in">
@@ -149,7 +190,7 @@ export function SiteShell() {
             </span>
           </a>
 
-          <nav className="navlinks" aria-label="Main navigation">
+          <nav className="navlinks" aria-label={t.navigationLabel}>
             {t.nav.map(([label, href]) => (
               <a href={href} key={href}>
                 {label}
@@ -158,16 +199,42 @@ export function SiteShell() {
           </nav>
 
           <div className="nav-actions">
-            <button
-              type="button"
-              className="lang"
-              onClick={() => setLanguage(language === "en" ? "am" : "en")}
-            >
-              <Icon name="globe" />
-              {t.language}
-            </button>
+            <div className="language-picker" ref={languagePickerRef}>
+              <button
+                type="button"
+                className={`lang ${languageOpen ? "is-open" : ""}`}
+                aria-label={`${t.selectLanguage}: ${currentLanguage.nativeLabel}`}
+                aria-haspopup="menu"
+                aria-expanded={languageOpen}
+                onClick={() => setLanguageOpen((current) => !current)}
+              >
+                <Icon name="globe" />
+                <span className="language-code">{currentLanguage.short}</span>
+              </button>
+              <div
+                className={`language-popover ${languageOpen ? "open" : ""}`}
+                role="menu"
+                aria-label={t.selectLanguage}
+              >
+                <span className="language-popover-title">{t.languageLabel}</span>
+                {languageOptions.map((option) => (
+                  <button
+                    type="button"
+                    role="menuitemradio"
+                    aria-checked={language === option.code}
+                    className={language === option.code ? "active" : ""}
+                    onClick={() => changeLanguage(option.code)}
+                    key={option.code}
+                  >
+                    <span>{option.short}</span>
+                    <b>{option.nativeLabel}</b>
+                    {language === option.code && <Icon name="check" />}
+                  </button>
+                ))}
+              </div>
+            </div>
             <a className="btn btn-dark plan" href="#contact">
-              {language === "en" ? "Plan a trip" : "ጉዞ ያቅዱ"}
+              {t.planTrip}
               <Icon name="arrow" />
             </a>
             <button
@@ -175,16 +242,11 @@ export function SiteShell() {
               className={`hamb ${menu ? "is-open" : ""}`}
               aria-expanded={menu}
               aria-controls="mobile-navigation"
-              aria-label={
-                menu
-                  ? language === "en"
-                    ? "Close navigation"
-                    : "መዳረሻውን ዝጋ"
-                  : language === "en"
-                    ? "Open navigation"
-                    : "መዳረሻውን ክፈት"
-              }
-              onClick={() => setMenu((current) => !current)}
+              aria-label={menu ? t.closeNavigation : t.openNavigation}
+              onClick={() => {
+                setMenu((current) => !current);
+                setLanguageOpen(false);
+              }}
             >
               <span className="hamb-lines" aria-hidden="true">
                 <i />
@@ -200,14 +262,33 @@ export function SiteShell() {
           className={`mobile ${menu ? "open" : ""}`}
           aria-hidden={!menu}
         >
-          <nav className="container" aria-label="Mobile navigation">
-            {t.nav.map(([label, href], index) => (
+          <nav className="container" aria-label={t.mobileNavigationLabel}>
+            {t.nav.map(([label, href]) => (
               <a href={href} onClick={() => setMenu(false)} key={href}>
-                <span>{String(index + 1).padStart(2, "0")}</span>
                 {label}
                 <Icon name="arrow" />
               </a>
             ))}
+            <div className="mobile-language-panel">
+              <span>
+                <Icon name="globe" />
+                {t.selectLanguage}
+              </span>
+              <div>
+                {languageOptions.map((option) => (
+                  <button
+                    type="button"
+                    className={language === option.code ? "active" : ""}
+                    aria-pressed={language === option.code}
+                    onClick={() => changeLanguage(option.code)}
+                    key={option.code}
+                  >
+                    <b>{option.short}</b>
+                    <small>{option.nativeLabel}</small>
+                  </button>
+                ))}
+              </div>
+            </div>
           </nav>
         </div>
       </header>
@@ -231,14 +312,9 @@ export function SiteShell() {
                   {t.explore}
                   <Icon name="arrow" />
                 </a>
-                <a
-                  className="btn btn-ghost"
-                  href={`https://wa.me/${contact.whatsapp}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <Icon name="whatsapp" />
-                  {t.whatsapp}
+                <a className="btn btn-ghost" href="#contact">
+                  <Icon name="plane" />
+                  {t.startJourney}
                 </a>
               </div>
               <div className="proof">
@@ -255,28 +331,20 @@ export function SiteShell() {
               <div className="photo photo-one">
                 <span>
                   <Icon name="kaaba" />
-                  <b>{language === "en" ? "Makkah & Madinah" : "መካ እና መዲና"}</b>
+                  <b>{t.makkahMadinah}</b>
                 </span>
               </div>
               <div className="photo photo-two">
                 <span>
                   <Icon name="building" />
-                  <b>Dubai</b>
+                  <b>{t.medina}</b>
                 </span>
               </div>
               <div className="badge">
                 <Icon name="shield" />
                 <span>
-                  <b>
-                    {language === "en"
-                      ? "Care at every step"
-                      : "በእያንዳንዱ ደረጃ እንክብካቤ"}
-                  </b>
-                  <small>
-                    {language === "en"
-                      ? "Local team · Global journeys"
-                      : "የአካባቢ ቡድን · ዓለም አቀፍ ጉዞ"}
-                  </small>
+                  <b>{t.careEveryStep}</b>
+                  <small>{t.localGlobal}</small>
                 </span>
               </div>
             </div>
@@ -316,7 +384,7 @@ export function SiteShell() {
                   </span>
                   <h3>{service.title}</h3>
                   <p>{service.body}</p>
-                  <a href="#contact">
+                  <a href="#contact" aria-label={`${t.planService} ${service.title}`}>
                     <Icon name="arrow" />
                   </a>
                 </article>
@@ -347,39 +415,37 @@ export function SiteShell() {
               ))}
             </div>
             <div className="package-grid">
-              {visible.map((travelPackage) => (
-                <article className="package" key={travelPackage.id}>
-                  <div
-                    className="package-img"
-                    style={{ backgroundImage: `url(${travelPackage.image})` }}
-                  >
-                    <span>{travelPackage.location[language]}</span>
-                    {travelPackage.featured && (
-                      <b>{language === "en" ? "Popular" : "ተመራጭ"}</b>
-                    )}
-                  </div>
-                  <div className="package-body">
-                    <p>{travelPackage.duration[language]}</p>
-                    <h3>{travelPackage.title[language]}</h3>
-                    <p>{travelPackage.description[language]}</p>
-                    <ul>
-                      {travelPackage.features.map((feature) => (
-                        <li key={feature[language]}>
-                          <Icon name="check" />
-                          {feature[language]}
-                        </li>
-                      ))}
-                    </ul>
-                    <button
-                      type="button"
-                      onClick={() => selectTrip(travelPackage.id)}
+              {visible.map((travelPackage) => {
+                const localized = localizePackage(travelPackage, language);
+                return (
+                  <article className="package" key={travelPackage.id}>
+                    <div
+                      className="package-img"
+                      style={{ backgroundImage: `url(${travelPackage.image})` }}
                     >
-                      {t.viewDetails}
-                      <Icon name="arrow" />
-                    </button>
-                  </div>
-                </article>
-              ))}
+                      <span>{localized.location}</span>
+                      {travelPackage.featured && <b>{t.popular}</b>}
+                    </div>
+                    <div className="package-body">
+                      <p>{localized.duration}</p>
+                      <h3>{localized.title}</h3>
+                      <p>{localized.description}</p>
+                      <ul>
+                        {localized.features.map((feature) => (
+                          <li key={feature}>
+                            <Icon name="check" />
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
+                      <button type="button" onClick={() => selectTrip(travelPackage.id)}>
+                        {t.viewDetails}
+                        <Icon name="arrow" />
+                      </button>
+                    </div>
+                  </article>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -402,7 +468,7 @@ export function SiteShell() {
               ))}
             </div>
             <a className="btn btn-gold" href="#contact">
-              {language === "en" ? "Plan your pilgrimage" : "የእምነት ጉዞዎን ያቅዱ"}
+              {t.planPilgrimage}
               <Icon name="arrow" />
             </a>
           </div>
@@ -460,9 +526,7 @@ export function SiteShell() {
                   type="button"
                   aria-label={t.previous}
                   onClick={() =>
-                    setStory(
-                      (story - 1 + t.testimonials.length) % t.testimonials.length,
-                    )
+                    setStory((story - 1 + t.testimonials.length) % t.testimonials.length)
                   }
                 >
                   <Icon name="arrowLeft" />
@@ -498,7 +562,7 @@ export function SiteShell() {
             >
               <Icon name="instagram" />
               <span>@sewab_travel</span>
-              <b>{language === "en" ? "Journey moments" : "የጉዞ ትዝታዎች"}</b>
+              <b>{t.journeyMoments}</b>
               <Icon name="arrow" />
             </a>
           </div>
@@ -517,7 +581,7 @@ export function SiteShell() {
                 rel="noreferrer"
               >
                 <Icon name="whatsapp" />
-                {language === "en" ? "Ask another question" : "ሌላ ጥያቄ ይጠይቁ"}
+                {t.askAnotherQuestion}
               </a>
             </div>
             <div>
@@ -566,8 +630,8 @@ export function SiteShell() {
                   <Icon name="location" />
                   <span>
                     <small>{t.office}</small>
-                    <b>{contact.office}</b>
-                    <em>{contact.hours}</em>
+                    <b>{t.officeLocation}</b>
+                    <em>{t.officeHours}</em>
                   </span>
                 </div>
               </div>
@@ -575,7 +639,7 @@ export function SiteShell() {
 
             <form onSubmit={submit} noValidate>
               <div className="form-title">
-                <b>{language === "en" ? "Trip enquiry" : "የጉዞ ጥያቄ"}</b>
+                <b>{t.tripEnquiry}</b>
                 <span>01 — 06</span>
               </div>
               <div className="form-grid">
@@ -592,6 +656,8 @@ export function SiteShell() {
                 <label>
                   <span>{t.form.phone} *</span>
                   <input
+                    type="tel"
+                    inputMode="tel"
                     value={form.phone}
                     onChange={(event: ChangeEvent<HTMLInputElement>) =>
                       setField("phone", event.target.value)
@@ -610,7 +676,7 @@ export function SiteShell() {
                     <option value="">{t.form.choose}</option>
                     {packages.map((travelPackage) => (
                       <option value={travelPackage.id} key={travelPackage.id}>
-                        {travelPackage.title[language]}
+                        {localizePackage(travelPackage, language).title}
                       </option>
                     ))}
                   </select>
@@ -706,7 +772,7 @@ export function SiteShell() {
             </a>
             <span>
               <Icon name="location" />
-              {contact.office}
+              {t.officeLocation}
             </span>
           </div>
           <a className="back" href="#home">
@@ -733,9 +799,10 @@ export function SiteShell() {
         href={`https://wa.me/${contact.whatsapp}`}
         target="_blank"
         rel="noreferrer"
+        aria-label={t.messageWhatsapp}
       >
         <Icon name="whatsapp" />
-        <span>WhatsApp</span>
+        <span>{t.whatsappLabel}</span>
       </a>
     </div>
   );
