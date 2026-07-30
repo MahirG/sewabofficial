@@ -12,6 +12,7 @@ import "./contact-form-tight.css";
 import "./mobile-menu-motion.css";
 import "./hero-aircraft.css";
 import "./mobile-brand-package-refinement.css";
+import "./languages.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.sewabgroups.com"),
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
     template: "%s | SEWAB Travel Designers",
   },
   description:
-    "Carefully managed Umrah, Hajj, UAE, and international travel experiences from Addis Ababa, Ethiopia, with Amharic-speaking support.",
+    "Carefully managed Umrah, Hajj, UAE, and international travel experiences from Addis Ababa, Ethiopia, with English, Amharic, Afaan Oromo, and Arabic support.",
   keywords: [
     "Umrah packages from Ethiopia",
     "Umrah from Addis Ababa",
@@ -29,6 +30,8 @@ export const metadata: Metadata = {
     "Umrah visa Ethiopia",
     "travel agency Addis Ababa",
     "Amharic Umrah guide",
+    "Afaan Oromo travel agency",
+    "Arabic Umrah support Ethiopia",
     "Dubai tour Ethiopia",
     "corporate travel Ethiopia",
     "SEWAB Travel Designers",
