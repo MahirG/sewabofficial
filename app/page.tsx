@@ -1,8 +1,9 @@
-import { MobileLanguageMenu } from "@/components/mobile-language-menu";
 import { MobileMenuContactActions } from "@/components/mobile-menu-contact-actions";
 import { PremiumEnhancements } from "@/components/premium-enhancements";
 import { SiteShell } from "@/components/site-shell";
 import { contact } from "@/lib/site-data";
+
+const supportedLanguages = ["English", "Amharic", "Afaan Oromo", "Arabic"];
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -14,7 +15,7 @@ const structuredData = {
       name: "SEWAB Travel Designers",
       description:
         "Umrah, Hajj, UAE and international travel planning from Addis Ababa, Ethiopia.",
-      inLanguage: ["en-ET", "am-ET"],
+      inLanguage: ["en-ET", "am-ET", "om-ET", "ar"],
       publisher: { "@id": "https://www.sewabgroups.com/#organization" },
       hasPart: [
         {
@@ -37,7 +38,7 @@ const structuredData = {
       logo: "https://www.sewabgroups.com/sewab-logo-original.svg",
       image: "https://www.sewabgroups.com/opengraph-image",
       description:
-        "Trusted Addis Ababa travel agency for Umrah, Hajj, UAE experiences, world tours and corporate travel with Amharic-speaking support.",
+        "Trusted Addis Ababa travel agency for Umrah, Hajj, UAE experiences, world tours and corporate travel with multilingual support.",
       telephone: contact.primaryPhone,
       email: contact.email,
       address: {
@@ -49,7 +50,7 @@ const structuredData = {
         "@type": "Country",
         name: "Ethiopia",
       },
-      knowsLanguage: ["English", "Amharic"],
+      knowsLanguage: supportedLanguages,
       sameAs: Object.values(contact.social),
       contactPoint: [
         {
@@ -57,14 +58,14 @@ const structuredData = {
           telephone: contact.primaryPhone,
           contactType: "customer service",
           areaServed: "ET",
-          availableLanguage: ["English", "Amharic"],
+          availableLanguage: supportedLanguages,
         },
         {
           "@type": "ContactPoint",
           telephone: contact.secondaryPhone,
           contactType: "WhatsApp travel enquiries",
           areaServed: "ET",
-          availableLanguage: ["English", "Amharic"],
+          availableLanguage: supportedLanguages,
         },
       ],
       makesOffer: [
@@ -95,7 +96,6 @@ export default function Home() {
       `}</style>
       <SiteShell />
       <PremiumEnhancements />
-      <MobileLanguageMenu />
       <MobileMenuContactActions />
     </>
   );
