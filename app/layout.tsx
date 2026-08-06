@@ -18,28 +18,27 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.sewabgroups.com"),
   applicationName: "SEWAB Travel Designers",
   title: {
-    default: "SEWAB Travel Designers | Umrah, Hajj & World Tours",
+    default: "SEWAB Travel Designers | Umrah & Hajj from Ethiopia",
     template: "%s | SEWAB Travel Designers",
   },
   description:
-    "Carefully managed Umrah, Hajj, UAE, and international travel experiences from Addis Ababa, Ethiopia, with English, Amharic, Afaan Oromo, and Arabic support.",
+    "Carefully coordinated Umrah and Hajj journeys from Addis Ababa, Ethiopia, with English, Amharic, Afaan Oromo, and Arabic pilgrim support.",
   keywords: [
     "Umrah packages from Ethiopia",
     "Umrah from Addis Ababa",
     "Hajj packages Ethiopia",
+    "Hajj from Addis Ababa",
     "Umrah visa Ethiopia",
-    "travel agency Addis Ababa",
+    "Umrah travel agency Addis Ababa",
     "Amharic Umrah guide",
-    "Afaan Oromo travel agency",
-    "Arabic Umrah support Ethiopia",
-    "Dubai tour Ethiopia",
-    "corporate travel Ethiopia",
+    "Afaan Oromo Umrah support",
+    "Arabic Hajj support Ethiopia",
     "SEWAB Travel Designers",
   ],
   authors: [{ name: "SEWAB Travel Designers", url: "https://www.sewabgroups.com" }],
   creator: "SEWAB Travel Designers",
   publisher: "SEWAB Travel Designers",
-  category: "Travel",
+  category: "Islamic Travel",
   referrer: "origin-when-cross-origin",
   formatDetection: {
     email: false,
@@ -50,9 +49,9 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "SEWAB Travel Designers",
+    title: "SEWAB Travel Designers | Umrah & Hajj",
     description:
-      "Purposeful Umrah, Hajj, UAE and international journeys designed from Ethiopia to the world.",
+      "Purposeful Umrah and Hajj journeys coordinated from Ethiopia to Makkah and Madinah.",
     url: "/",
     type: "website",
     locale: "en_ET",
@@ -60,9 +59,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "SEWAB Travel Designers",
+    title: "SEWAB Travel Designers | Umrah & Hajj",
     description:
-      "Purposeful Umrah, Hajj, UAE and international journeys designed from Ethiopia to the world.",
+      "Purposeful Umrah and Hajj journeys coordinated from Ethiopia to Makkah and Madinah.",
   },
   robots: {
     index: true,
