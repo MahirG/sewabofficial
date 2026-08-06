@@ -1,6 +1,6 @@
 # SEWAB Travel Designers
 
-A production-ready, bilingual Next.js website for SEWAB Travel Designers in Addis Ababa, Ethiopia.
+A production-ready, multilingual Next.js website for SEWAB Travel Designers in Addis Ababa, Ethiopia, focused exclusively on Umrah and Hajj.
 
 ## Stack
 
@@ -12,13 +12,13 @@ A production-ready, bilingual Next.js website for SEWAB Travel Designers in Addi
 
 ## Features
 
-- English and Amharic language switcher
+- English, Amharic, Afaan Oromo, and Arabic language selector
 - Responsive navigation and mobile menu
-- Umrah, Hajj, UAE, and world-tour service presentation
-- Interactive package filters, testimonials, and FAQs
-- WhatsApp-powered enquiry form
+- Umrah and Hajj service presentation
+- Umrah and Hajj package filters, pilgrim testimonials, and FAQs
+- WhatsApp-powered pilgrimage enquiry form
 - Accessible controls, focus states, and reduced-motion support
-- SEO metadata and TravelAgency structured data
+- SEO metadata and TravelAgency structured data focused on pilgrimage services
 
 ## Local development
 
