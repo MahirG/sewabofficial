@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "SEWAB Travel Designers",
     short_name: "SEWAB",
     description:
-      "Umrah, Hajj, UAE and international travel planning from Addis Ababa, Ethiopia.",
+      "Umrah and Hajj travel planning from Addis Ababa, Ethiopia, with multilingual pilgrim support.",
     start_url: "/",
     display: "standalone",
     background_color: "#fffdf8",
