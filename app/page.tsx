@@ -14,13 +14,13 @@ const structuredData = {
       url: "https://www.sewabgroups.com",
       name: "SEWAB Travel Designers",
       description:
-        "Umrah, Hajj, UAE and international travel planning from Addis Ababa, Ethiopia.",
+        "Umrah and Hajj travel planning from Addis Ababa, Ethiopia, with multilingual pilgrim support.",
       inLanguage: ["en-ET", "am-ET", "om-ET", "ar"],
       publisher: { "@id": "https://www.sewabgroups.com/#organization" },
       hasPart: [
         {
           "@type": "WebPage",
-          name: "SEWAB Travel Guides",
+          name: "SEWAB Umrah and Hajj Guides",
           url: "https://www.sewabgroups.com/blog",
         },
         {
@@ -38,7 +38,7 @@ const structuredData = {
       logo: "https://www.sewabgroups.com/sewab-logo-original.svg",
       image: "https://www.sewabgroups.com/opengraph-image",
       description:
-        "Trusted Addis Ababa travel agency for Umrah, Hajj, UAE experiences, world tours and corporate travel with multilingual support.",
+        "Trusted Addis Ababa pilgrimage agency specializing exclusively in Umrah and Hajj coordination with multilingual support.",
       telephone: contact.primaryPhone,
       email: contact.email,
       address: {
@@ -56,23 +56,23 @@ const structuredData = {
         {
           "@type": "ContactPoint",
           telephone: contact.primaryPhone,
-          contactType: "customer service",
+          contactType: "Umrah and Hajj enquiries",
           areaServed: "ET",
           availableLanguage: supportedLanguages,
         },
         {
           "@type": "ContactPoint",
           telephone: contact.secondaryPhone,
-          contactType: "WhatsApp travel enquiries",
+          contactType: "WhatsApp pilgrimage enquiries",
           areaServed: "ET",
           availableLanguage: supportedLanguages,
         },
       ],
       makesOffer: [
-        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Umrah and Hajj travel coordination" } },
-        { "@type": "Offer", itemOffered: { "@type": "Service", name: "UAE travel experiences" } },
-        { "@type": "Offer", itemOffered: { "@type": "Service", name: "International world tours" } },
-        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Corporate travel management" } },
+        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Umrah travel coordination" } },
+        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Hajj travel coordination" } },
+        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Pilgrimage visa and document guidance" } },
+        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Multilingual pilgrim support" } },
       ],
     },
   ],
